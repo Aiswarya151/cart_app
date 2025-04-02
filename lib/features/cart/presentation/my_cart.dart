@@ -69,14 +69,11 @@ class CartScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment
                               .center, // Centers items horizontally
                           children: [
-                            IconButton(
-                              icon: const Icon(Icons.close),
-                              onPressed: () {},
-                              padding: EdgeInsets
-                                  .zero, // Removes extra padding around the button
-                              constraints:
-                                  const BoxConstraints(), // Prevents extra space
-                            ),
+                            const Icon(Icons.close),
+
+                            // Removes extra padding around the button
+                            // Prevents extra space
+
                             const Text('Qty: 2'),
                           ],
                         ),

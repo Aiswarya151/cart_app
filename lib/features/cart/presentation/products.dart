@@ -29,20 +29,18 @@ class ProductsScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
+      body: GridView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 39),
-        child: GridView.builder(
-          itemCount: 6, // Adjust number of products
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Two items per row
-            crossAxisSpacing: 26,
-            mainAxisSpacing: 33,
-            childAspectRatio: 0.7, // Adjust height ratio
-          ),
-          itemBuilder: (context, index) {
-            return ProductCard();
-          },
+        itemCount: 6, // Adjust number of products
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // Two items per row
+          crossAxisSpacing: 26,
+          mainAxisSpacing: 33,
+          childAspectRatio: 0.7, // Adjust height ratio
         ),
+        itemBuilder: (context, index) {
+          return ProductCard();
+        },
       ),
     );
   }
@@ -71,10 +69,11 @@ class ProductCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           // Placeholder for product image
           Container(
-            height: 90,
+            height: 140,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.grey.shade200,
