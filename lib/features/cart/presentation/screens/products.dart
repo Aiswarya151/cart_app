@@ -1,10 +1,22 @@
 import 'package:cart_app/core/router/router.dart';
 import 'package:cart_app/core/theme/app_colors.dart';
+import 'package:cart_app/features/cart/viewmodel/cart_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ProductsScreen extends StatelessWidget {
+class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
 
+  @override
+  State<ProductsScreen> createState() => _ProductsScreenState();
+}
+
+class _ProductsScreenState extends State<ProductsScreen> {
+  @override
+  void initState(){
+    context.read<CartProvider>().fetchProducts();
+super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +41,24 @@ class ProductsScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: GridView.builder(
+      body: 
+           ProductList()
+        
+    );
+  }
+}
+
+// Product Card Widget
+class ProductList extends StatelessWidget {
+  const ProductList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return
+    Consumer<CartProvider>(builder: (context,cartProvider,child){return
+       GridView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 39),
-        itemCount: 6, // Adjust number of products
+        itemCount: cartProvider.products.length, // Adjust number of products
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, // Two items per row
           crossAxisSpacing: 26,
@@ -39,20 +66,8 @@ class ProductsScreen extends StatelessWidget {
           childAspectRatio: 0.7, // Adjust height ratio
         ),
         itemBuilder: (context, index) {
-          return ProductCard();
-        },
-      ),
-    );
-  }
-}
-
-// Product Card Widget
-class ProductCard extends StatelessWidget {
-  const ProductCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
+          final product=cartProvider.products[index];
+           return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -73,7 +88,7 @@ class ProductCard extends StatelessWidget {
         children: [
           // Placeholder for product image
           Container(
-            height: 140,
+            height: 100,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.grey.shade200,
@@ -82,14 +97,14 @@ class ProductCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Center(
-            child: const Text(
-              "iPhone",
+            child:  Text(
+              product.name??"",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
-            "₹ 50000",
+          Text(
+            product.price??"",
             style: TextStyle(fontSize: 14, color: Colors.black),
           ),
           const SizedBox(height: 8),
@@ -115,5 +130,10 @@ class ProductCard extends StatelessWidget {
         ],
       ),
     );
+        },
+      );
+    
+   
+  });
   }
 }

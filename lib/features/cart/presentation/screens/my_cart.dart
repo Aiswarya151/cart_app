@@ -1,6 +1,8 @@
 import 'package:cart_app/core/router/router.dart';
+import 'package:cart_app/features/authentication/viewmodel/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -26,7 +28,7 @@ class CartScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              appRouter.goNamed('login');
+              context.read<AuthProvider>().logout(context);
             },
           ),
         ],

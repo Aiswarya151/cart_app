@@ -1,7 +1,9 @@
 import 'package:cart_app/core/router/router.dart';
 import 'package:cart_app/core/shared_widgets/custom_textfield.dart';
 import 'package:cart_app/core/theme/app_colors.dart';
+import 'package:cart_app/features/authentication/viewmodel/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -12,6 +14,10 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool isPasswordVisible = false;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +40,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 40), // Space below title
 
             // Username Field
-            CustomTextField(hintText: "Username"),
+            CustomTextField(hintText: "Username",controller: usernameController,),
             const SizedBox(height: 16), // Spacing
 
             // Email Field
-            CustomTextField(hintText: "Your Email"),
+            CustomTextField(hintText: "Your Email",controller: emailController,),
             const SizedBox(height: 16), // Spacing
 
             // Password Field
             CustomTextField(
+              controller: passwordController,
               obscureText: !isPasswordVisible,
               suffixIcon: IconButton(
                 icon: Icon(
@@ -63,6 +70,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
+                  
+                  context.read<AuthProvider>().signUp(username: usernameController.text, email: emailController.text, password: passwordController.text, context: context);
                   // Handle sign-up logic
                 },
                 child: const Text(

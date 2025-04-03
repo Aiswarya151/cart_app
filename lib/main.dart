@@ -1,9 +1,21 @@
 import 'package:cart_app/core/router/router.dart';
 import 'package:cart_app/core/theme/theme.dart';
+import 'package:cart_app/features/authentication/viewmodel/auth_provider.dart';
+import 'package:cart_app/features/cart/viewmodel/cart_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+   WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    MultiProvider(providers: [
+         ChangeNotifierProvider(create: (_) => AuthProvider()),
+         ChangeNotifierProvider(create: (_) => CartProvider()),
+      ],
+      child: const MyApp(
+      
+        ),));
+     
 }
 
 class MyApp extends StatelessWidget {
