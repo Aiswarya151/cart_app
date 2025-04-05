@@ -17,9 +17,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
+  
+
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = context.watch<AuthProvider>().isloading;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -78,10 +81,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   context.read<AuthProvider>().login(email: emailController.text, password: passwordController.text, context: context);
                   // Handle login action
                 },
-                child: const Text(
+                child: isLoading?const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    ):
+                const Text(
                   "Continue",
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
+                
               ),
             ),
             const SizedBox(height: 20),

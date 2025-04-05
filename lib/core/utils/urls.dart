@@ -7,5 +7,6 @@ class Urls {
   static const login = '/users/login';
   static const products = '/product';
    static const cart = '/cart';
+   static const cartadd = '/cart/add';
    
 }
