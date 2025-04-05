@@ -19,6 +19,7 @@ super.initState();
   }
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -55,7 +56,11 @@ class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-    Consumer<CartProvider>(builder: (context,cartProvider,child){return
+    Consumer<CartProvider>(builder: (context,cartProvider,child){
+      if(cartProvider.isLoading){
+        return Center(child: CircularProgressIndicator(),);
+      }
+      return
        GridView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 39),
         itemCount: cartProvider.products.length, // Adjust number of products
@@ -114,6 +119,7 @@ class ProductList extends StatelessWidget {
             child: OutlinedButton(
               onPressed: () {
                 // Add to cart logic
+                cartProvider.addCart(productId: product.id??"", context: context);
               },
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppColors.primary),

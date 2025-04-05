@@ -1,12 +1,24 @@
 import 'package:cart_app/core/router/router.dart';
 import 'package:cart_app/features/authentication/viewmodel/auth_provider.dart';
+import 'package:cart_app/features/cart/viewmodel/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+
+  @override
+  void initState(){
+    context.read<CartProvider>().viewCart();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,50 +51,68 @@ class CartScreen extends StatelessWidget {
           children: [
             const Gap(10),
             Expanded(
-              child: ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        leading: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(12),
+              child: Consumer<CartProvider>(
+                builder: (context,cartProvider,child) {
+                  if(cartProvider.isLoading){
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  
+
+                  return ListView.builder(
+                   itemCount: cartProvider.cart?.items?.length ?? 0,
+
+                    
+                    itemBuilder: (context, index) {
+                      final cartItem=cartProvider.cart!.items?[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Card(
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListTile(
+                            leading: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            title: Text(cartItem?.name??""),
+                            subtitle:  Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(cartItem?.price??""),
+                              ],
+                            ),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .spaceBetween, // Moves close icon up
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .center, // Centers items horizontally
+                              children: [
+                                GestureDetector(child: const Icon(Icons.close),
+                                onTap: (){
+cartProvider.removeCart(productId: cartItem!.productId??"", context: context);
+                                },),
+                  
+                                // Removes extra padding around the button
+                                // Prevents extra space
+                  
+                                Text(cartItem?.quantity?.toString() ?? '0'),
+
+                              ],
+                            ),
                           ),
                         ),
-                        title: const Text('Iphone'),
-                        subtitle: const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('₹ 50000'),
-                          ],
-                        ),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment
-                              .spaceBetween, // Moves close icon up
-                          crossAxisAlignment: CrossAxisAlignment
-                              .center, // Centers items horizontally
-                          children: [
-                            const Icon(Icons.close),
-
-                            // Removes extra padding around the button
-                            // Prevents extra space
-
-                            const Text('Qty: 2'),
-                          ],
-                        ),
-                      ),
-                    ),
+                      );
+                    },
                   );
-                },
+                }
               ),
             ),
           ],

@@ -1,33 +1,53 @@
 // To parse this JSON data, do
 //
-//     final carttModel = carttModelFromJson(jsonString);
+//     final cartModel = cartModelFromJson(jsonString);
 
 import 'dart:convert';
 
-CartModel carttModelFromJson(String str) => CartModel.fromJson(json.decode(str));
+CartModel cartModelFromJson(String str) => CartModel.fromJson(json.decode(str));
 
-String carttModelToJson(CartModel data) => json.encode(data.toJson());
+String cartModelToJson(CartModel data) => json.encode(data.toJson());
 
 class CartModel {
-    String? id;
-    List<dynamic>? items;
-    int? v;
+    List<Item>? items;
 
     CartModel({
-        this.id,
         this.items,
-        this.v,
     });
 
     factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
-        id: json["_id"],
-        items: json["items"] == null ? [] : List<dynamic>.from(json["items"]!.map((x) => x)),
-        v: json["__v"],
+        items: json["items"] == null ? [] : List<Item>.from(json["items"]!.map((x) => Item.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "_id": id,
-        "items": items == null ? [] : List<dynamic>.from(items!.map((x) => x)),
-        "__v": v,
+        "items": items == null ? [] : List<dynamic>.from(items!.map((x) => x.toJson())),
+    };
+}
+
+class Item {
+    String? productId;
+    String? name;
+    String? price;
+    int? quantity;
+
+    Item({
+        this.productId,
+        this.name,
+        this.price,
+        this.quantity,
+    });
+
+    factory Item.fromJson(Map<String, dynamic> json) => Item(
+        productId: json["productId"],
+        name: json["name"],
+        price: json["price"],
+        quantity: json["quantity"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "productId": productId,
+        "name": name,
+        "price": price,
+        "quantity": quantity,
     };
 }

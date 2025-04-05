@@ -21,6 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = context.watch<AuthProvider>().isloading;
     return Scaffold(
       // Background color
       body: Padding(
@@ -74,7 +75,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   context.read<AuthProvider>().signUp(username: usernameController.text, email: emailController.text, password: passwordController.text, context: context);
                   // Handle sign-up logic
                 },
-                child: const Text(
+                child: isLoading?const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    ):
+                const Text(
                   "Continue",
                   // style: TextStyle(
                   //   fontSize: 16,
