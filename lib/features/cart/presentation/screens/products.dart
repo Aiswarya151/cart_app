@@ -1,7 +1,9 @@
 import 'package:cart_app/core/router/router.dart';
 import 'package:cart_app/core/theme/app_colors.dart';
+import 'package:cart_app/features/cart/presentation/widgets/product_shimmer.dart';
 import 'package:cart_app/features/cart/viewmodel/cart_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class ProductsScreen extends StatefulWidget {
@@ -36,7 +38,7 @@ super.initState();
               Icons.shopping_cart,
             ),
             onPressed: () {
-              appRouter.goNamed('cart');
+              context.pushNamed('cart');
               // Navigate to cart screen
             },
           ),
@@ -58,7 +60,7 @@ class ProductList extends StatelessWidget {
     return
     Consumer<CartProvider>(builder: (context,cartProvider,child){
       if(cartProvider.isLoading){
-        return Center(child: CircularProgressIndicator(),);
+        return Center(child: ProductShimmer(),);
       }
       return
        GridView.builder(
@@ -72,70 +74,75 @@ class ProductList extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           final product=cartProvider.products[index];
-           return Container(
-      padding: const EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 4,
-            spreadRadius: 1,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          // Placeholder for product image
-          Container(
-            height: 100,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Center(
-            child:  Text(
-              product.name??"",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            product.price??"",
-            style: TextStyle(fontSize: 14, color: Colors.black),
-          ),
-          const SizedBox(height: 8),
-          SizedBox(
-            width: double.infinity,
-            height: 36,
-            child: OutlinedButton(
-              onPressed: () {
-                // Add to cart logic
-                cartProvider.addCart(productId: product.id??"", context: context);
-              },
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppColors.primary),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+           return GestureDetector(
+            onTap:() {context.pushNamed('productdetail',extra:product );},
+             child: Container(
+                   padding: const EdgeInsets.all(6),
+                   decoration: BoxDecoration(
+                     color: Colors.white,
+                     borderRadius: BorderRadius.circular(12),
+                     border: Border.all(color: Colors.grey.shade300),
+                     boxShadow: [
+                       BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 4,
+              spreadRadius: 1,
+              offset: const Offset(0, 2),
+                       ),
+                     ],
+                   ),
+                   
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                     children: [
+                       // Placeholder for product image
+                       Container(
+              height: 100,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(8),
+              ),
+                       ),
+                       const SizedBox(height: 8),
+                       Center(
+              child:  Text(
+                product.name??"",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+                       ),
+                       const SizedBox(height: 4),
+                       Text(
+              product.price??"",
+              style: TextStyle(fontSize: 14, color: Colors.black),
+                       ),
+                       const SizedBox(height: 8),
+                       SizedBox(
+              width: double.infinity,
+              height: 36,
+              child: OutlinedButton(
+                onPressed: () {
+                  // Add to cart logic
+                  cartProvider.addCart(productId: product.id??"", context: context);
+                },
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: AppColors.primary),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  "Add to cart",
+                  style: TextStyle(color: AppColors.primary),
                 ),
               ),
-              child: const Text(
-                "Add to cart",
-                style: TextStyle(color: AppColors.primary),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+                       ),
+                     ],
+                     
+                   ),
+                 ),
+           );
         },
       );
     
