@@ -26,7 +26,7 @@ class _CartScreenState extends State<CartScreen> {
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              appRouter.goNamed('products');
+              Navigator.pop(context);
             }),
         title: const Text(
           'My Cart',
