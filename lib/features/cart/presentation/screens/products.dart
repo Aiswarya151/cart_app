@@ -16,7 +16,9 @@ class ProductsScreen extends StatefulWidget {
 class _ProductsScreenState extends State<ProductsScreen> {
   @override
   void initState(){
-    context.read<CartProvider>().fetchProducts();
+    final cartProvider = context.read<CartProvider>();
+  cartProvider.fetchProducts();
+  cartProvider.viewCart(); // fetches cartItems
 super.initState();
   }
   @override
@@ -75,7 +77,7 @@ class ProductList extends StatelessWidget {
         itemBuilder: (context, index) {
           final product=cartProvider.products[index];
            return GestureDetector(
-            onTap:() {context.pushNamed('productdetail',extra:product );},
+            onTap:() {context.pushNamed('productdetail',extra:product.id );},
              child: Container(
                    padding: const EdgeInsets.all(6),
                    decoration: BoxDecoration(
@@ -121,22 +123,38 @@ class ProductList extends StatelessWidget {
                        SizedBox(
               width: double.infinity,
               height: 36,
-              child: OutlinedButton(
-                onPressed: () {
-                  // Add to cart logic
-                  cartProvider.addCart(productId: product.id??"", context: context);
-                },
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: AppColors.primary),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  "Add to cart",
-                  style: TextStyle(color: AppColors.primary),
-                ),
-              ),
+              child: cartProvider.cart!.items!.any((item) => item.productId == product.id)
+  ? ElevatedButton(
+      onPressed: () {
+        context.pushNamed('cart');
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: const Text(
+        "View in Cart",
+        style: TextStyle(color: Colors.white),
+      ),
+    )
+  : OutlinedButton(
+      onPressed: () {
+        cartProvider.addCart(productId: product.id ?? "", context: context);
+      },
+      style: OutlinedButton.styleFrom(
+        side: const BorderSide(color: AppColors.primary),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: const Text(
+        "Add to cart",
+        style: TextStyle(color: AppColors.primary),
+      ),
+    )
+
                        ),
                      ],
                      

@@ -2,11 +2,12 @@ import 'package:cart_app/core/theme/app_colors.dart';
 import 'package:cart_app/features/cart/data/model/product_model.dart';
 import 'package:cart_app/features/cart/viewmodel/cart_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailPage extends StatefulWidget {
-  final ProductModel product;
-  const ProductDetailPage({super.key, required this.product});
+  final String productId;
+  const ProductDetailPage({super.key, required this.productId});
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -15,9 +16,11 @@ class ProductDetailPage extends StatefulWidget {
 class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
+    final cartProvider=context.read<CartProvider>();
+    final product=cartProvider.products.firstWhere((p)=>p.id==widget.productId);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.product.name ?? ""),
+        title: Text(product.name ?? ""),
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -53,7 +56,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.product.name ?? "",
+                        product.name ?? "",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -62,7 +65,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        widget.product.price ?? "",
+                        product.price ?? "",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
@@ -71,19 +74,46 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ],
                   ),
                   // Add to cart button
-                  OutlinedButton(
-                    onPressed: () {
-                      
-                  // Add to cart logic
-                  context.read<CartProvider>().addCart(productId: widget.product.id??"", context: context);
-                },
-                    
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.primary,
-                      side: const BorderSide(color: AppColors.primary)
-                    ),
-                    child: const Text("Add to cart"),
-                  ),
+                       Consumer<CartProvider>(
+                         builder: (context,cartProvider,child) {
+                           return SizedBox(
+                                         // width: double.infinity,
+                                         // height: 36,
+                                         child: cartProvider.cart!.items!.any((item) => item.productId == product.id)
+                             ? ElevatedButton(
+                                 onPressed: () {
+                                   context.pushNamed('cart');
+                                 },
+                                 style: ElevatedButton.styleFrom(
+                                   backgroundColor: AppColors.primary,
+                                   shape: RoundedRectangleBorder(
+                                     borderRadius: BorderRadius.circular(12),
+                                   ),
+                                 ),
+                                 child: const Text(
+                                   "View in Cart",
+                                   style: TextStyle(color: Colors.white),
+                                 ),
+                               )
+                             : OutlinedButton(
+                                 onPressed: () {
+                                   cartProvider.addCart(productId: product.id ?? "", context: context);
+                                 },
+                                 style: OutlinedButton.styleFrom(
+                                   side: const BorderSide(color: AppColors.primary),
+                                   shape: RoundedRectangleBorder(
+                                     borderRadius: BorderRadius.circular(12),
+                                   ),
+                                 ),
+                                 child: const Text(
+                                   "Add to cart",
+                                   style: TextStyle(color: AppColors.primary),
+                                 ),
+                               )
+                           
+                           );
+                         }
+                       ),
                 ],
               ),
             ),
