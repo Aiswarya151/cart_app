@@ -61,7 +61,7 @@ class AuthProvider extends ChangeNotifier {
       customSnackbar(
         // ignore: use_build_context_synchronously
         context: context,
-        message: "Something went wrong: ${e.toString()}",
+        message: "Something went wrong",
         type: SnackbarType.error,
       );
     } finally {
@@ -123,7 +123,7 @@ class AuthProvider extends ChangeNotifier {
       customSnackbar(
         // ignore: use_build_context_synchronously
         context: context,
-        message: "Something went wrong: ${e.toString()}",
+        message: "Something went wrong",
         type: SnackbarType.error,
       );
     } finally {

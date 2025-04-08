@@ -5,20 +5,17 @@ import 'package:cart_app/features/authentication/viewmodel/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
- State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
-  
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +41,14 @@ class _LoginScreenState extends State<LoginScreen> {
             // Email Field
             const Text(
               "Your Email",
-              //style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
-            CustomTextField(hintText: "contact@dscodetech.com",controller: emailController,),
+            CustomTextField(
+              controller: emailController,
+            ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 8),
             // Password Field
 
             const Text(
@@ -78,22 +77,25 @@ class _LoginScreenState extends State<LoginScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  context.read<AuthProvider>().login(email: emailController.text, password: passwordController.text, context: context);
+                  context.read<AuthProvider>().login(
+                      email: emailController.text,
+                      password: passwordController.text,
+                      context: context);
                   // Handle login action
                 },
-                child: isLoading?const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
+                child: isLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Text(
+                        "Continue",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
-                    ):
-                const Text(
-                  "Continue",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                
               ),
             ),
             const SizedBox(height: 20),
@@ -106,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF2A2A2A), 
+                    color: Color(0xFF2A2A2A),
                   ),
                 ),
                 TextButton(

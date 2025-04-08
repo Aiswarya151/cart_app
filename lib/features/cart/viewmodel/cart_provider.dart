@@ -65,6 +65,7 @@ class CartProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         log(" Added to cart Successfully");
+        await viewCart();
         customSnackbar(
             context: context,
             message: "Item Added to cart Successfully",

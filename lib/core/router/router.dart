@@ -15,6 +15,6 @@ routes: [
    GoRoute(path: '/signup',name: 'signup',builder: (context, state) => SignUpScreen(),),
    GoRoute(path: '/cart',name: 'cart',builder: (context, state) => CartScreen(),),
    GoRoute(path: '/productdetail',name: 'productdetail',builder: (context, state) {
-final product=state.extra as ProductModel;
-    return ProductDetailPage(product: product,);},),
+final productId=state.extra as String;
+    return ProductDetailPage(productId: productId,);},),
 ] );

@@ -17,7 +17,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 26),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 100), // Adjust for spacing
             const Text(
@@ -39,15 +38,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
             const SizedBox(height: 40), // Space below title
-
+            const Text(
+              "Username",
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 8),
             // Username Field
-            CustomTextField(hintText: "Username",controller: usernameController,),
-            const SizedBox(height: 16), // Spacing
-
+            CustomTextField(
+              controller: usernameController,
+            ),
+            const SizedBox(height: 8), // Spacing
+            const Text(
+              "Your Email",
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 8),
             // Email Field
-            CustomTextField(hintText: "Your Email",controller: emailController,),
-            const SizedBox(height: 16), // Spacing
-
+            CustomTextField(
+              controller: emailController,
+            ),
+            const SizedBox(height: 8), // Spacing
+            const Text(
+              "Password",
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 8),
             // Password Field
             CustomTextField(
               controller: passwordController,
@@ -71,26 +86,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  
-                  context.read<AuthProvider>().signUp(username: usernameController.text, email: emailController.text, password: passwordController.text, context: context);
+                  context.read<AuthProvider>().signUp(
+                      username: usernameController.text,
+                      email: emailController.text,
+                      password: passwordController.text,
+                      context: context);
                   // Handle sign-up logic
                 },
-                child: isLoading?const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
+                child: isLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Text(
+                        "Continue",
+                        // style: TextStyle(
+                        //   fontSize: 16,
+                        //   fontWeight: FontWeight.bold,
+                        //   color: Colors.white,
+                        // ),
                       ),
-                    ):
-                const Text(
-                  "Continue",
-                  // style: TextStyle(
-                  //   fontSize: 16,
-                  //   fontWeight: FontWeight.bold,
-                  //   color: Colors.white,
-                  // ),
-                ),
               ),
             ),
             const SizedBox(height: 20), // Spacing
