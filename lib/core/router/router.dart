@@ -1,6 +1,6 @@
 import 'package:cart_app/features/authentication/presentation/login.dart';
 import 'package:cart_app/features/authentication/presentation/signup.dart';
-import 'package:cart_app/features/cart/data/model/product_model.dart';
+
 import 'package:cart_app/features/cart/presentation/screens/product_detail.dart';
 import 'package:cart_app/features/cart/presentation/screens/my_cart.dart';
 import 'package:cart_app/features/cart/presentation/screens/products.dart';
@@ -16,5 +16,5 @@ routes: [
    GoRoute(path: '/cart',name: 'cart',builder: (context, state) => CartScreen(),),
    GoRoute(path: '/productdetail',name: 'productdetail',builder: (context, state) {
 final productId=state.extra as String;
-    return ProductDetailPage(productId: productId,);},),
+    return ProductDetailPage(productId: productId);},),
 ] );

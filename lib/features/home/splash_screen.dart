@@ -4,7 +4,7 @@ import 'package:cart_app/features/authentication/data/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shimmer/shimmer.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

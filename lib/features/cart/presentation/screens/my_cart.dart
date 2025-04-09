@@ -1,4 +1,4 @@
-import 'package:cart_app/core/router/router.dart';
+
 import 'package:cart_app/features/authentication/viewmodel/auth_provider.dart';
 import 'package:cart_app/features/cart/viewmodel/cart_provider.dart';
 import 'package:flutter/material.dart';

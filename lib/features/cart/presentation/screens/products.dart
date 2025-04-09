@@ -1,4 +1,4 @@
-import 'package:cart_app/core/router/router.dart';
+
 import 'package:cart_app/core/theme/app_colors.dart';
 import 'package:cart_app/features/cart/presentation/widgets/product_shimmer.dart';
 import 'package:cart_app/features/cart/viewmodel/cart_provider.dart';
@@ -86,7 +86,9 @@ class ProductList extends StatelessWidget {
                      border: Border.all(color: Colors.grey.shade300),
                      boxShadow: [
                        BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+             color: Colors.grey.withValues(alpha: 0.2 * 255),
+
+
               blurRadius: 4,
               spreadRadius: 1,
               offset: const Offset(0, 2),
@@ -123,12 +125,13 @@ class ProductList extends StatelessWidget {
                        SizedBox(
               width: double.infinity,
               height: 36,
-              child: cartProvider.cart!.items!.any((item) => item.productId == product.id)
+              child: product.alreadyInCart==true
   ? ElevatedButton(
       onPressed: () {
         context.pushNamed('cart');
       },
       style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.zero,
         backgroundColor: AppColors.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
