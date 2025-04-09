@@ -9,9 +9,13 @@ import 'package:cart_app/features/cart/data/services/cart_services.dart';
 
 class CartProvider extends ChangeNotifier {
   List<ProductModel> _products = [];
-  bool _isLoading = false;
-
   List<ProductModel> get products => _products;
+
+  ProductModel? _singleProduct;
+  ProductModel? get singleproduct => _singleProduct;
+
+
+  bool _isLoading = false;
   bool get isLoading => _isLoading;
 
   Future<void> fetchProducts() async {
@@ -31,6 +35,27 @@ class CartProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> getProductDetails({required String productId}) async{
+_isLoading=true;
+    try{
+      Response response=await CartServices().getProductDetails(productId: productId);
+      if (response.statusCode==200){
+        log('Api response:${response.data.toString()}');
+       
+        _singleProduct=ProductModel.fromJson(response.data);
+
+      }
+    }
+    catch(e){
+      log(e.toString());
+    }
+    finally{
+      _isLoading=false;
+      notifyListeners();
+    }
+
   }
 
   CartModel? _cart;
@@ -65,15 +90,19 @@ class CartProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         log(" Added to cart Successfully");
-        await viewCart();
-        customSnackbar(
+         customSnackbar(
+            // ignore: use_build_context_synchronously
             context: context,
             message: "Item Added to cart Successfully",
             type: SnackbarType.success);
+        await fetchProducts();
+        await getProductDetails(productId: productId);
+       
       }
     } catch (e) {
       log(" Error: $e");
       customSnackbar(
+          // ignore: use_build_context_synchronously
           context: context,
           message: "Failed to add item",
           type: SnackbarType.error);
@@ -93,13 +122,15 @@ class CartProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         log(" Removed cart item Successfully");
-        await viewCart();
-
-        customSnackbar(
+         customSnackbar(
             // ignore: use_build_context_synchronously
             context: context,
             message: "Item Removed from cart Successfully",
             type: SnackbarType.success);
+        await viewCart();
+        await fetchProducts();
+
+       
       }
     } catch (e) {
       log(" Error: $e");

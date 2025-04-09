@@ -14,6 +14,16 @@ class CartServices {
       throw Exception('failed to fetch products: $e');
     }
   }
+
+  //fetch product details
+   Future<Response> getProductDetails({required String productId}) async {
+    try {
+      final Response response = await ApiService().getRequest('${Urls.baseUrl}${Urls.products}/$productId');
+      return response;
+    } catch (e) {
+      throw Exception('failed to fetch product details: $e');
+    }
+  }
   //add cart
    Future<Response> addCart({required String productId}) async {
     try {
